@@ -1,7 +1,9 @@
-﻿import RoutePicker from './RoutePicker.jsx'
+﻿import { useBooking } from '../../hooks/useBooking.js'
+import { usePageVisibilityAlert } from '../../hooks/usePageVisibilityAlert.js'
+import { formatCurrency } from '../../utils/formatCurrency.js'
+import RoutePicker from './RoutePicker.jsx'
 import ScheduleGrid from './ScheduleGrid.jsx'
 import VehicleSelector from './VehicleSelector.jsx'
-import { useBooking } from '../../hooks/useBooking.js'
 
 function BookingBottomSheet() {
   const {
@@ -9,11 +11,15 @@ function BookingBottomSheet() {
     destinationId,
     vehicleId,
     selectedSlot,
+    selectedVehicle,
+    freightEstimate,
     setPickupId,
     setDestinationId,
     setVehicleId,
     setSelectedSlot,
   } = useBooking()
+
+  usePageVisibilityAlert(Boolean(selectedSlot))
 
   return (
     <section
@@ -36,6 +42,30 @@ function BookingBottomSheet() {
 
       <h2 className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-slate-500">Horarios</h2>
       <ScheduleGrid selectedSlot={selectedSlot} onSelect={setSelectedSlot} />
+
+      <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4" aria-live="polite">
+        <p className="text-xs uppercase tracking-wider text-slate-500">Resumo dinamico</p>
+        <div className="mt-2 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-sm text-slate-600">Distancia estimada</p>
+            <p className="text-lg font-semibold text-slate-900">{freightEstimate.distanceKm.toFixed(2)} km</p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-slate-600">Veiculo</p>
+            <p className="text-base font-semibold text-slate-900">{selectedVehicle?.name}</p>
+          </div>
+        </div>
+        <p className="mt-3 text-2xl font-bold text-slate-900">{formatCurrency(freightEstimate.total)}</p>
+      </div>
+
+      <button
+        type="button"
+        aria-label="Confirmar agendamento"
+        disabled={!selectedSlot}
+        className="mt-5 w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition enabled:hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {selectedSlot ? `Confirmar para ${selectedSlot}` : 'Escolha um horario para continuar'}
+      </button>
     </section>
   )
 }

@@ -12,15 +12,16 @@ function VehicleSelector({ selectedVehicleId, onSelect }) {
             type="button"
             aria-label={`Selecionar veiculo ${vehicle.name}`}
             onClick={() => onSelect(vehicle.id)}
-            className={`min-w-40 rounded-2xl border px-4 py-3 text-left transition ${
+            className={`min-w-44 rounded-2xl border px-4 py-3 text-left transition ${
               selected
-                ? 'border-amber-400 bg-amber-50 text-slate-900'
+                ? 'border-amber-400 bg-amber-50 text-slate-900 shadow'
                 : 'border-slate-200 bg-white text-slate-600'
             }`}
           >
             <p className="font-semibold">{vehicle.name}</p>
             <p className="text-xs">{vehicle.capacity}</p>
             <p className="text-xs">ETA {vehicle.eta}</p>
+            <p className="mt-1 text-xs font-semibold text-amber-600">Fator x{vehicle.factor}</p>
           </button>
         )
       })}

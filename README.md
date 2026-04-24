@@ -1,16 +1,83 @@
-# React + Vite
+﻿# Truckly MVP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Plataforma mobile first para agendamento de fretes urbanos com visual de app nativo/PWA.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite
+- Tailwind CSS
+- Leaflet + React-Leaflet
+- Context API + Hooks nativos
+- Simulacao de dados via `src/data/constants.js`
 
-## React Compiler
+## Arquitetura de Pastas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```txt
+src/
+  components/
+    booking/
+      BookingBottomSheet.jsx
+      RoutePicker.jsx
+      ScheduleGrid.jsx
+      VehicleSelector.jsx
+    map/
+      RouteMap.jsx
+  context/
+    BookingContext.jsx
+  data/
+    constants.js
+  hooks/
+    useBooking.js
+    usePageVisibilityAlert.js
+  services/
+    freightService.js
+  utils/
+    formatCurrency.js
+  App.jsx
+  index.css
+  main.jsx
+```
 
-## Expanding the ESLint configuration
+## Regras de Negocio
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Distancia calculada por Haversine entre origem e destino simulados.
+- Preco dinamico: `valor = distanciaKm * fatorDoVeiculo`.
+- Fatores definidos em `VEHICLE_OPTIONS` no arquivo de constantes.
+
+## Diferenciais Implementados
+
+- Mapa no topo (Mobile First) com rota simulada.
+- BottomSheet persistente com cards horizontais de veiculo.
+- Grid inteligente de horarios (desabilita horarios passados e destaca selecao).
+- Acessibilidade com `aria-label`/`aria-live`.
+- Page Visibility API: alerta quando o usuario sai da aba durante o agendamento.
+
+## Rodando localmente
+
+```bash
+npm install
+npm run dev
+```
+
+## Deploy Profissional
+
+### Vercel
+
+1. Importe o repositorio no painel da Vercel.
+2. Framework detectado: Vite.
+3. Build Command: `npm run build`.
+4. Output Directory: `dist`.
+5. O arquivo `vercel.json` ja inclui rewrite SPA para `index.html`.
+
+### GitHub Pages
+
+1. Faça push do projeto para o repositorio `Truckly`.
+2. Em GitHub > Settings > Pages, selecione **GitHub Actions** como source.
+3. O workflow `.github/workflows/deploy-gh-pages.yml` publica automaticamente a cada push na `master`.
+4. URL final: `https://<seu-usuario>.github.io/Truckly/`.
+
+## Sugestao de Conventional Commits
+
+- `chore(scaffold): bootstrap truckly architecture and design system`
+- `feat(map): add leaflet route map as mobile header`
+- `feat(pricing): implement dynamic freight calculation by vehicle factor`
