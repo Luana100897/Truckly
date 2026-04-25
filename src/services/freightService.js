@@ -23,20 +23,27 @@ export function calculateDistanceKm(originCoords, destinationCoords) {
   return Number(rawDistance.toFixed(2))
 }
 
-export function calculateFreightPrice(distanceKm, vehicleFactor) {
-  if (!distanceKm || !vehicleFactor) {
+export function calculateFreightPrice(distanceKm, vehicleFactor, customRatePerKm) {
+  if (!distanceKm) {
     return 0
   }
 
-  return Number((distanceKm * vehicleFactor).toFixed(2))
+  const appliedRate = customRatePerKm && customRatePerKm > 0 ? customRatePerKm : vehicleFactor
+
+  if (!appliedRate) {
+    return 0
+  }
+
+  return Number((distanceKm * appliedRate).toFixed(2))
 }
 
-export function getFreightEstimate(originCoords, destinationCoords, vehicleFactor) {
+export function getFreightEstimate(originCoords, destinationCoords, vehicleFactor, customRatePerKm) {
   const distanceKm = calculateDistanceKm(originCoords, destinationCoords)
-  const total = calculateFreightPrice(distanceKm, vehicleFactor)
+  const total = calculateFreightPrice(distanceKm, vehicleFactor, customRatePerKm)
 
   return {
     distanceKm,
     total,
+    appliedRatePerKm: customRatePerKm && customRatePerKm > 0 ? customRatePerKm : vehicleFactor,
   }
 }

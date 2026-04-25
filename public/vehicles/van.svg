@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="Van de Carga">
+  <rect width="320" height="180" rx="24" fill="#f8fafc"/>
+  <rect x="44" y="64" width="192" height="56" rx="10" fill="#1e293b"/>
+  <rect x="220" y="76" width="56" height="44" rx="8" fill="#334155"/>
+  <rect x="230" y="84" width="22" height="14" rx="3" fill="#bfdbfe"/>
+  <circle cx="92" cy="128" r="15" fill="#0f172a"/>
+  <circle cx="92" cy="128" r="7" fill="#94a3b8"/>
+  <circle cx="236" cy="128" r="15" fill="#0f172a"/>
+  <circle cx="236" cy="128" r="7" fill="#94a3b8"/>
+</svg>

@@ -1,71 +1,94 @@
 ﻿import { useBooking } from '../../hooks/useBooking.js'
 import { usePageVisibilityAlert } from '../../hooks/usePageVisibilityAlert.js'
-import { formatCurrency } from '../../utils/formatCurrency.js'
+import DateSelector from './DateSelector.jsx'
 import RoutePicker from './RoutePicker.jsx'
 import ScheduleGrid from './ScheduleGrid.jsx'
 import VehicleSelector from './VehicleSelector.jsx'
 
 function BookingBottomSheet() {
   const {
-    pickupId,
-    destinationId,
     vehicleId,
+    selectedDateId,
     selectedSlot,
-    selectedVehicle,
-    freightEstimate,
-    setPickupId,
-    setDestinationId,
+    selectedOrigin,
+    selectedDestination,
+    originInput,
+    destinationInput,
+    originSuggestions,
+    destinationSuggestions,
+    isSearchingOrigin,
+    isSearchingDestination,
+    isLiveLocationEnabled,
+    geoError,
+    vehicleQuotes,
+    cheapestVehicleId,
+    availableDates,
+    availableSlots,
     setVehicleId,
+    onOriginInputChange,
+    onDestinationInputChange,
+    selectOrigin,
+    selectDestination,
+    startLiveLocation,
+    stopLiveLocation,
+    setSelectedDateId,
     setSelectedSlot,
   } = useBooking()
 
-  usePageVisibilityAlert(Boolean(selectedSlot))
+  const canConfirm = Boolean(selectedOrigin && selectedDestination && selectedDateId && selectedSlot)
+
+  usePageVisibilityAlert(canConfirm)
 
   return (
     <section
-      className="relative -mt-8 flex-1 rounded-t-[2rem] bg-white px-4 pb-8 pt-5 shadow-[0_-10px_30px_rgba(17,24,39,0.2)]"
+      className="relative flex h-full flex-col rounded-[2rem] bg-white px-4 pb-7 pt-5 shadow-xl ring-1 ring-slate-200/80 lg:rounded-[2.25rem] lg:px-6 lg:pt-6"
       aria-label="Painel de agendamento"
     >
-      <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-slate-300" />
-      <h1 className="text-2xl font-bold text-slate-900">Agende seu frete</h1>
-      <p className="mb-4 text-sm text-slate-600">Escolha rota, veiculo e horario.</p>
+      <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-slate-300 lg:hidden" />
+      <h1 className="text-2xl font-bold text-slate-900 lg:text-3xl">Agende seu frete</h1>
+      <p className="mb-4 text-sm text-slate-600 lg:mb-5">Digite origem e destino com endereco real, depois escolha veiculo, data e horario.</p>
 
-      <RoutePicker
-        pickupId={pickupId}
-        destinationId={destinationId}
-        onPickupChange={setPickupId}
-        onDestinationChange={setDestinationId}
-      />
+      <div className="space-y-5 overflow-auto pr-1 lg:pb-2">
+        <RoutePicker
+          originInput={originInput}
+          destinationInput={destinationInput}
+          originSuggestions={originSuggestions}
+          destinationSuggestions={destinationSuggestions}
+          isSearchingOrigin={isSearchingOrigin}
+          isSearchingDestination={isSearchingDestination}
+          selectedOrigin={selectedOrigin}
+          selectedDestination={selectedDestination}
+          isLiveLocationEnabled={isLiveLocationEnabled}
+          geoError={geoError}
+          onOriginInputChange={onOriginInputChange}
+          onDestinationInputChange={onDestinationInputChange}
+          onSelectOrigin={selectOrigin}
+          onSelectDestination={selectDestination}
+          onStartLiveLocation={startLiveLocation}
+          onStopLiveLocation={stopLiveLocation}
+        />
 
-      <h2 className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-slate-500">Veiculo</h2>
-      <VehicleSelector selectedVehicleId={vehicleId} onSelect={setVehicleId} />
-
-      <h2 className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-slate-500">Horarios</h2>
-      <ScheduleGrid selectedSlot={selectedSlot} onSelect={setSelectedSlot} />
-
-      <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4" aria-live="polite">
-        <p className="text-xs uppercase tracking-wider text-slate-500">Resumo dinamico</p>
-        <div className="mt-2 flex items-end justify-between gap-3">
-          <div>
-            <p className="text-sm text-slate-600">Distancia estimada</p>
-            <p className="text-lg font-semibold text-slate-900">{freightEstimate.distanceKm.toFixed(2)} km</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-slate-600">Veiculo</p>
-            <p className="text-base font-semibold text-slate-900">{selectedVehicle?.name}</p>
-          </div>
+        <div>
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Veiculo</h2>
+          <VehicleSelector
+            selectedVehicleId={vehicleId}
+            vehicleQuotes={vehicleQuotes}
+            cheapestVehicleId={cheapestVehicleId}
+            onSelect={setVehicleId}
+          />
         </div>
-        <p className="mt-3 text-2xl font-bold text-slate-900">{formatCurrency(freightEstimate.total)}</p>
+
+        <div>
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Datas</h2>
+          <DateSelector availableDates={availableDates} selectedDateId={selectedDateId} onSelect={setSelectedDateId} />
+        </div>
+
+        <div>
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Horarios</h2>
+          <ScheduleGrid availableSlots={availableSlots} selectedSlot={selectedSlot} onSelect={setSelectedSlot} />
+        </div>
       </div>
 
-      <button
-        type="button"
-        aria-label="Confirmar agendamento"
-        disabled={!selectedSlot}
-        className="mt-5 w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition enabled:hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {selectedSlot ? `Confirmar para ${selectedSlot}` : 'Escolha um horario para continuar'}
-      </button>
     </section>
   )
 }

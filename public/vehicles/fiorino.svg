@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="Fiorino">
+  <rect width="320" height="180" rx="24" fill="#f8fafc"/>
+  <rect x="56" y="72" width="124" height="48" rx="8" fill="#334155"/>
+  <rect x="170" y="78" width="76" height="42" rx="8" fill="#475569"/>
+  <rect x="186" y="84" width="28" height="16" rx="4" fill="#bfdbfe"/>
+  <circle cx="96" cy="126" r="14" fill="#0f172a"/>
+  <circle cx="96" cy="126" r="6" fill="#94a3b8"/>
+  <circle cx="212" cy="126" r="14" fill="#0f172a"/>
+  <circle cx="212" cy="126" r="6" fill="#94a3b8"/>
+</svg>
