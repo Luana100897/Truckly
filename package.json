@@ -1,5 +1,6 @@
 {
   "name": "truckly",
+  "description": "Plataforma de fretes urbanos em desenvolvimento, com agendamento, rota, veiculos e fluxo operacional.",
   "private": true,
   "version": "0.0.0",
   "type": "module",

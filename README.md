@@ -2,6 +2,10 @@
 
 Plataforma mobile first para agendamento de fretes urbanos com visual de app nativo/PWA.
 
+## Status do projeto
+
+Este projeto ainda esta em fase de desenvolvimento e aperfeicoamento. As funcionalidades atuais servem para validar a experiencia de agendamento, estimativa de frete, escolha de veiculo e fluxo operacional antes da evolucao para uma versao final com backend, autenticacao, pagamentos e operacao em producao.
+
 ## Stack
 
 - React + Vite
